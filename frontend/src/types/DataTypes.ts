@@ -1,9 +1,9 @@
 export interface Card{
     word : string;
     reading : string; 
-    translations : Set<string>;
-    extendedReadings : [Set<string>, Set<string>]; // [onyomi, kunyomi]
-    examples : Array<String>;
+    translations : string[];
+    extendedReadings: [string[], string[]]; // [onyomi, kunyomi]
+    examples: string[];
 
 }
 
@@ -27,4 +27,5 @@ export interface CardSet extends Compendium {
 }
 export interface Collection extends Compendium {
 }
+
 

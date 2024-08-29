@@ -4,15 +4,15 @@ import { Card, Deck, CardSet, Collection, Compendium, CompendiumType } from '../
 export const dummyCard1 : Card = {
     word : "模擬",
     reading : "もぎ",
-    translations : new Set(["dummy", "mock"]),
-    extendedReadings : [new Set(["dummy1"]), new Set(["dummy2"])],
+    translations : ["dummy", "mock"],
+    extendedReadings : [["dummy1"], ["dummy2"]],
     examples : ["これは模擬カードである。"]
 }
 export const dummyCard2: Card = {
     word: "別模擬",
     reading: "もぎ",
-    translations: new Set(["dummy", "mock"]),
-    extendedReadings: [new Set(["dummy1"]), new Set(["dummy2"])],
+    translations: ["dummy", "mock"],
+    extendedReadings: [["dummy1"], ["dummy2"]],
     examples: ["これは模擬カードである。"]
 }
 export const dummyDeck1 : Deck = {

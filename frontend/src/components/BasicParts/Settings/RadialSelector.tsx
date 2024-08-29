@@ -2,6 +2,7 @@ import { ChangeEvent } from 'react';
 import { EnumDisplay } from '../../../types/SettingTypes';
 
 interface Props {
+    radioID: string;
     currentCategory: string;
     onChange: (newValue: string) => void;
     categories: Array<EnumDisplay>;
@@ -17,7 +18,7 @@ const RadialSelector = (props: Props) => {
                     <label key={index}>
                         <input
                             type="radio"
-                            name="radial-selector"
+                            name={props.radioID}
                             value={category.key}
                             checked={props.currentCategory === category.key}
                             onChange={() => props.onChange(category.key)}
