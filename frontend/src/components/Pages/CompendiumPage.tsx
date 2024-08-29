@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { Compendium, CompendiumType} from '../../types/DataTypes';
+import { Compendium, CompendiumType, Deck} from '../../types/DataTypes';
 import { dummyCompendium } from '../BasicParts/Mocks/MockData';
 import { FaPlus } from "react-icons/fa6";
-import { IoArrowBack } from "react-icons/io5";
-import IconButton from '../BasicParts/Buttons/IconButton';
+import BackButton from '../BasicParts/Buttons/BackButton';
+import DeckPage from './DeckPage';
+import { useNavigate } from 'react-router-dom';
 
 const CompendiumPage = () => {
-
-    const [message, setMessage] = useState('Undefined');
+    const navigate = useNavigate();
     const [curCompendium, setCurCompendium] = useState<Compendium>(dummyCompendium);
     let isTop = curCompendium.type === CompendiumType.Top;
     let isCollection = curCompendium.type === CompendiumType.Collection;
@@ -15,7 +15,11 @@ const CompendiumPage = () => {
     let isDeck = curCompendium.type === CompendiumType.Deck;
     const header = isTop ? "Card Collections" : CompendiumType[curCompendium.type] + ": " + curCompendium.name;
 
+    const returnToParent = () => {
+        console.log("Returning to Parent");
+        setCurCompendium(curCompendium.parent as Compendium);
 
+    }
     const createCompendium = () => {
         console.log("Creating Collection");
     }
@@ -29,17 +33,22 @@ const CompendiumPage = () => {
             nextCompendium.parent = curCompendium;
         }
         setCurCompendium(nextCompendium);
+        if (nextCompendium.type === CompendiumType.Deck){
+            console.log("Moving to Deck:", nextCompendium.name);
+        }
 
     }
 
     
-    return (
-        <div className="flex flex-col justiy-center items-center">
+    return (<>
+        {
+            isDeck && <DeckPage thisDeck={curCompendium as Deck} returnToParent={returnToParent}/>
+        }
+        {!isDeck && <div className="flex flex-col justiy-center items-center">
             <div className="flex flex-row mt-5">
                 {!isTop &&
-                    <IconButton onClick={() => moveToCompedium(curCompendium, curCompendium.parent, false)}>
-                        <IoArrowBack size={30} />
-                    </IconButton>}
+                    <BackButton onClick={() => moveToCompedium(curCompendium, curCompendium.parent, false)} />
+                }
                 <p className='font-bold text-2xl'>{header}</p>
             </div>
             
@@ -62,7 +71,8 @@ const CompendiumPage = () => {
 
                 </div>
             </div>
-        </div>
+        </div>}
+    </>
     );
 }
 
