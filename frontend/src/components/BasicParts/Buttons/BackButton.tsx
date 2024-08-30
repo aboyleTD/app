@@ -3,7 +3,7 @@ interface Props {
     onClick: () => void;
 }
 
-const IconButton = (props: Props) => {
+const BackButton = (props: Props) => {
     return (
         <button
             onClick={props.onClick}
@@ -13,4 +13,4 @@ const IconButton = (props: Props) => {
     );
 };
 
-export default IconButton;
+export default BackButton;

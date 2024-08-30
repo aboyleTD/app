@@ -3,8 +3,8 @@ export enum TestFormat{
     Sequential = "Sequential",
 }
 export enum QueryType{
-    EnglishToNihongo = "EnglishToNihongo",
-    NihongoToEnglish = "NihongoToEnglish",
+    Forward = "Forward",
+    Backward = "Backward",
     Kanji = "Kanji",
 }
 export interface EnumDisplay {

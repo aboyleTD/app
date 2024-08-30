@@ -53,9 +53,9 @@ const CompendiumPage = () => {
             </div>
             
             <div className="grid grid-cols-3 gap-x-5 gap-y-5 columns-3 ml-5 mt-20 mb-10 overflow-y-scroll">
-                {curCompendium.compendium.map((compendium) => {
+                {curCompendium.compendium.map((compendium: Compendium, index: number,) => {
                     return (
-                        <button className='font-normal text-xl bg-inherit border-black border-2 rounded-lg hover:bg-gray-500 hover:border-white hover:text-slate-100 w-44 h-44'
+                        <button key={index.toString()+compendium.name} className='font-normal text-xl bg-inherit border-black border-2 rounded-lg hover:bg-gray-500 hover:border-white hover:text-slate-100 w-44 h-44'
                             onClick={() => moveToCompedium(curCompendium,compendium, true)}>
                             {compendium.name}
                         </button>

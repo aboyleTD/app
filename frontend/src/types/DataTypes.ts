@@ -27,5 +27,5 @@ export interface CardSet extends Compendium {
 }
 export interface Collection extends Compendium {
 }
-
+export type TitledText = [string,string];
 

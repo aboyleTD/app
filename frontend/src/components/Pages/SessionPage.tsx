@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Card,Deck } from '../../types/DataTypes';
 import { SessionSettings, TestFormat } from '../../types/SettingTypes';
-import { getRandomInt } from '../BasicParts/BasicFunctions';
-import { createIndexArray } from '../BasicParts/BasicFunctions';
+import { getRandomInt, createIndexArray,modulus } from '../BasicParts/BasicFunctions';
 import Button from '../BasicParts/Buttons/BaseButton';
 import CardDisplayContainer  from '../Cards/CardDisplayContainer';
 
@@ -20,20 +19,8 @@ const SessionPage = (props: SessionPageProps) => {
     let testLen = props.settings.testLen;
     let lowerBound = props.settings.lowerBound;
     let upperBound = props.settings.upperBound;
-    let firstIndex = 0;
-    let initPrevIndex = 0;
 
-    // Initialize IndexChain of Length testLen
-    if (testFormat === TestFormat.Random) {
-        // Randomize the deck
-        firstIndex = getRandomInt(lowerBound, upperBound);
-        initPrevIndex = lowerBound;
-    } else if (testFormat === TestFormat.Sequential) {
-        firstIndex = lowerBound;
-        initPrevIndex = upperBound;
-    } else {
-        console.log("Invalid Test Format");
-    }
+    
     let indexArray = createIndexArray(testLen, lowerBound, upperBound, testFormat);
     const [counter,setCounter] = useState<number>(0);
     const [points,setPoints] = useState<number>(0);
@@ -41,14 +28,15 @@ const SessionPage = (props: SessionPageProps) => {
     const [currentCardIndex, setCurrentCardIndex] = useState<number>(indexArray[0]);
 
     const goNext = () => {
-        let nextCounter = counter + 1 % testLen;
+        let nextCounter = modulus(counter + 1, testLen);
+        console.log("Next Counter: ", nextCounter, "Test Length: ", testLen);
         let nextIndex = indexArray[nextCounter];
         setCounter(nextCounter);
         setCurrentCardIndex(nextIndex);
 
     }
     const goPrev = () => {
-        let prevCounter = counter - 1 % testLen;
+        let prevCounter = modulus(counter - 1, testLen);
         let prevIndex = indexArray[prevCounter];
         setCounter(prevCounter);
         setCurrentCardIndex(prevIndex);
@@ -57,10 +45,15 @@ const SessionPage = (props: SessionPageProps) => {
     return (
         <>
             {!proceedToScore &&
-            <div>
+            <div className='flex flex-col justify-center items-center'>
+                <div className='flex flex-col '>
                 <h1 className='font-bold text-2xl'>Currently Running: {deck.name}</h1>
-                <p>Current Item: {counter}/{testLen}</p>
-                <CardDisplayContainer card={deck.cards[currentCardIndex]} queryType={queryType} goNextCard={goNext} goPrevCard={goPrev} />
+                    <p>Current Item: {counter+1}/{testLen}</p>
+                    <p>Points: {points}/{testLen}</p>
+                </div>
+                <div className='mt-16'>
+                    <CardDisplayContainer card={deck.cards[currentCardIndex]} queryType={queryType} goNextCard={goNext} goPrevCard={goPrev} />
+                </div>
                 <Button order={1} absolute={true} onClick={props.terminateSession} >
                     End Session
                 </Button>

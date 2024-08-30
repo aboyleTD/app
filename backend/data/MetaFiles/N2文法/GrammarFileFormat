@@ -1,0 +1,4 @@
+Grammer file format:
+
+textversion of it(i.e. how you'd encounter it)#reading (if necessary)&potential variations#how to construct it for 1.verbs/2.nouns/3.i-adjectives/4.na-adjectives (separated by $)#English description(s) (separated by $)#Example sentences separated by $
+不要 in the noun column means nothing more is needed

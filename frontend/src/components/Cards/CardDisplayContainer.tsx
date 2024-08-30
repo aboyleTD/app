@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import {Card} from '../../types/DataTypes';
+import {Card, TitledText} from '../../types/DataTypes';
 import {QueryType} from '../../types/SettingTypes';
+import { modulus } from '../BasicParts/BasicFunctions';
 import CardDisplay from './CardDisplay';
+import CardButton from '../BasicParts/Buttons/CardButton';
 
 interface CardDisplayContainerProps {
     card: Card;
@@ -14,30 +16,34 @@ const CardDisplayContainer = (props: CardDisplayContainerProps) => {
     const card = props.card;
     const [side, setSide] = useState<number>(0);
     
-    let textList: string[] = [];
+    let titledTextList: (TitledText)[] = [];
     switch (props.queryType) {
-        case QueryType.NihongoToEnglish:
-            textList = [card.reading+"\n"+card.word, "Translations:\n"+card.translations.join("\n"), "Examples:\n"+card.examples.join("\n")];
+        case QueryType.Forward:
+            titledTextList = [["Original Term",card.reading + "\n" + card.word], ["翻訳",card.translations.join("\n")], ["例文",card.examples.join("\n")]];
             break;
-        case QueryType.EnglishToNihongo:
-            textList = [card.translations.join("\n"), "Original Word:\n" + card.reading + "\n" + card.word, "Examples:\n"+ card.examples.join("\n")];
+        case QueryType.Backward:
+            titledTextList = [["翻訳",card.translations.join("\n")], ["Original Term", card.reading + "\n" + card.word], ["例文", card.examples.join("\n")]];
             break;
         case QueryType.Kanji:
-            textList = [card.word, "音読み\n" +card.extendedReadings[0].join("\n")+"訓読み\n"+ card.extendedReadings[1].join("\n"), "Translations:\n"+card.translations.join("\n"), "Examples:\n"+card.examples.join("\n")];
+            titledTextList = [["漢字", card.word], ["音読み と 訓読み" ,card.extendedReadings[0].join("\n") + "\n" + card.extendedReadings[1].join("\n")], ["翻訳",card.translations.join("\n")], ["例文",card.examples.join("\n")]];
             break;
         default:
             console.log("Invalid Query Type");
     }
     const goNextSide = () => {
-        setSide((side + 1) % textList.length);
+        setSide(modulus((side + 1), titledTextList.length));
     }
     const goPrevSide = () => {
-        setSide((side - 1) % textList.length);
+        setSide(modulus((side - 1), titledTextList.length));
     }   
 
     return (
-        <div className=''>
-            <CardDisplay text={textList[side]} goNextSide={goNextSide} goPrevSide={goPrevSide}/>
+        <div className='flex flex-col gap-y-10'>
+            <CardDisplay titledText={titledTextList[side]} goNextSide={goNextSide} goPrevSide={goPrevSide}/>
+            <div className='flex flex-row justify-between '>
+                <CardButton text="Previous" onClick={props.goPrevCard}/>
+                <CardButton text="Next" onClick={props.goNextCard}/>
+            </div>
         </div>
     )
 

@@ -22,3 +22,8 @@ export const createIndexArray = (len:number, lowerBound:number, upperBound:numbe
     }
     return indexArray;
 }
+
+export const modulus = (a:number, b:number) => {
+    //Implementing the modulus function that works for negative numbers
+    return ((a % b) + b) % b;
+}
