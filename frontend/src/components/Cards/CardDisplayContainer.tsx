@@ -12,24 +12,68 @@ interface CardDisplayContainerProps {
     goPrevCard: () => void;
     
 }
+
 const CardDisplayContainer = (props: CardDisplayContainerProps) => {
     const card = props.card;
     const [side, setSide] = useState<number>(0);
-    
-    let titledTextList: (TitledText)[] = [];
+
+    //items 0 = term as kanji, 1 = reading+term, 
+    const itemToTitle: { [key: number]: string } = {
+        0: "漢字",
+        1: "Orignal Term",
+        2: "音読み と 訓読み",
+        3: "翻訳",
+        4: "例文"
+    }
+    const handlePotEmptyList = (value:string[]|null) => {
+        if (!value){
+            return ""
+        } else {
+            return value.join(", ")
+        }
+
+    }
+    const itemToContent = (item:number) => {
+        switch (item){
+            case 0: return card.term;
+            case 1: return card.reading + "\n" + card.term;
+            case 2: return handlePotEmptyList(card.extendedReadings[0]) + "\n" + handlePotEmptyList(card.extendedReadings[1]);
+            case 3: return handlePotEmptyList(card.translations)
+            case 4: return handlePotEmptyList(card.examples)
+            default: return ""
+        }
+    }
+    const buildTextList = (items:number[]):TitledText[] => {
+        let titledTextList:TitledText[] = [];
+        let content:string|null;
+        let item:number;
+        for (let i = 0; i < items.length; i++){
+            item = items[i]
+            content = itemToContent(item)
+            if (content.length !== 0){
+                titledTextList.push([itemToTitle[item],content])
+            }
+                
+        }
+        return titledTextList
+
+
+    };
+    let items:number[] = [];
     switch (props.queryType) {
         case QueryType.Forward:
-            titledTextList = [["Original Term",card.reading + "\n" + card.word], ["翻訳",card.translations.join("\n")], ["例文",card.examples.join("\n")]];
+            items = [1,3,4]
             break;
         case QueryType.Backward:
-            titledTextList = [["翻訳",card.translations.join("\n")], ["Original Term", card.reading + "\n" + card.word], ["例文", card.examples.join("\n")]];
+            items = [3,1,4]
             break;
         case QueryType.Kanji:
-            titledTextList = [["漢字", card.word], ["音読み と 訓読み" ,card.extendedReadings[0].join("\n") + "\n" + card.extendedReadings[1].join("\n")], ["翻訳",card.translations.join("\n")], ["例文",card.examples.join("\n")]];
+            items = [0,2,3,4]
             break;
         default:
             console.log("Invalid Query Type");
     }
+    let titledTextList = buildTextList(items);
     const goNextSide = () => {
         setSide(modulus((side + 1), titledTextList.length));
     }

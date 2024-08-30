@@ -22,7 +22,7 @@ export function CardStack(props: CardStackProps) {
             <div
                 className='absolute top-20 left-10 w-36 h-36 cursor-pointer rounded-xl border-2 border-gray-700 bg-white px-6 py-3 text-center flex items-center justify-center' 
                 style={{ top: `${nhidden * offsetPerElement + 100}px` }}>
-                <p >{data.cards[0].word}</p>
+                <p >{data.cards[0].term}</p>
                 {hiddenElementIndices.map((index: number) => {
                     let offset = (index + 1) * offsetPerElement;
                     return (
@@ -39,7 +39,7 @@ export function CardStack(props: CardStackProps) {
                             onMouseLeave={(e) => {
                                 (e.currentTarget as HTMLElement).style.transform = `translate(${0}px, ${-offset}px)`;
                             }}>
-                            <p>{data.cards[index + 1].word}</p>
+                            <p>{data.cards[index + 1].term}</p>
                         </div>
                     );
                 })}

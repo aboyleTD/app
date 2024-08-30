@@ -1,5 +1,5 @@
 export interface Card{
-    word : string;
+    term : string;
     reading : string; 
     translations : string[];
     extendedReadings: [string[], string[]]; // [onyomi, kunyomi]
@@ -16,7 +16,7 @@ export enum CompendiumType {
 export interface Compendium {
     name: string;
     type: CompendiumType;
-    parent?: Compendium;
+    parent?: Compendium; //Unique to frontend
     compendium: Array<Compendium>;
 
 }

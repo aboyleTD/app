@@ -38,7 +38,7 @@ export function CardStack(props: CardStackProps) {
                             onMouseLeave={(e) => {
                                 (e.currentTarget as HTMLElement).style.transform = `translate(${0}px, ${-offset}px)`;
                             }}>
-                            <p className=" font-medium text-lg">{card.word}</p>
+                            <p className=" font-medium text-lg">{card.term}</p>
                         </div>
                     );
                 })}
