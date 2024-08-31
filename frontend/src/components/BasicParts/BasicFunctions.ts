@@ -8,6 +8,7 @@ export const getRandomInt = (min:number, max:number) => {
 }
 
 export const createIndexArray = (len:number, lowerBound:number, upperBound:number, format: TestFormat) => {
+    console.log("Invoke create index array")
     let indexArray = Array<number>(len);
     if (format === TestFormat.Random) {
         for (let i = 0; i < len; i++) {

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Deck } from '../../types/DataTypes';
-import { DEFAULT_STUDY_SETTINGS } from '../../constants/DefaultValues';
+import { getDefaultSettings } from '../../constants/DefaultValues';
 import { TestFormat,QueryType, SessionSettings } from '../../types/SettingTypes';
+import { createIndexArray } from '../BasicParts/BasicFunctions';
+
 import CardStack from '../Cards/CardStack';
 import BackButton from '../BasicParts/Buttons/BackButton';
 import SessionSettingsDisplay from '../Cards/SessionSettingsDisplay';
@@ -12,9 +14,9 @@ interface DeckSetPageProps {
 }
 
 const DeckPage = (props: DeckSetPageProps) => {
-
-    const [sessionSettings,setSessionSettings] = useState<SessionSettings>(DEFAULT_STUDY_SETTINGS);
+    const [sessionSettings, setSessionSettings] = useState<SessionSettings>(getDefaultSettings(props.thisDeck));
     const [sessionRunning, setSessionRunning] = useState<boolean>(false);
+    const [indexArray, setIndexArray] = useState<number[]>([]);
     
     const returnToCollectionBrowser = () => {
         console.log("Returning to Collection Browser");
@@ -43,6 +45,7 @@ const DeckPage = (props: DeckSetPageProps) => {
     const startSession = () => {
         console.log("Starting Session with Settings: ", sessionSettings);
         setSessionRunning(true);
+        setIndexArray(createIndexArray(sessionSettings.testLen, sessionSettings.lowerBound, sessionSettings.upperBound, sessionSettings.testFormat))
     }
     const terminateSession= () => {
         setSessionRunning(false);
@@ -74,7 +77,7 @@ const DeckPage = (props: DeckSetPageProps) => {
             </div>}
             {sessionRunning &&
             <div className='flex flex-row m-10 justify-center'>
-                <SessionPage deck={props.thisDeck} settings={sessionSettings} terminateSession={terminateSession}/>
+                <SessionPage deck={props.thisDeck} indexArray={indexArray} settings={sessionSettings} terminateSession={terminateSession}/>
             </div>    
             }
         </>

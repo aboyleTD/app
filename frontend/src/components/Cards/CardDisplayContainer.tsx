@@ -79,14 +79,22 @@ const CardDisplayContainer = (props: CardDisplayContainerProps) => {
     }
     const goPrevSide = () => {
         setSide(modulus((side - 1), titledTextList.length));
+    }
+    const goNextCardWithSideReset = () => {
+        setSide(0);
+        props.goNextCard();
     }   
+    const goPrevCardWithSideReset = () => {
+        setSide(0);
+        props.goPrevCard();
+    }
 
     return (
         <div className='flex flex-col gap-y-10'>
             <CardDisplay titledText={titledTextList[side]} goNextSide={goNextSide} goPrevSide={goPrevSide}/>
             <div className='flex flex-row justify-between '>
-                <CardButton text="Previous" onClick={props.goPrevCard}/>
-                <CardButton text="Next" onClick={props.goNextCard}/>
+                <CardButton text="Previous" onClick={goPrevCardWithSideReset}/>
+                <CardButton text="Next" onClick={goNextCardWithSideReset}/>
             </div>
         </div>
     )

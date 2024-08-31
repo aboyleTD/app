@@ -9,6 +9,7 @@ import CardDisplayContainer  from '../Cards/CardDisplayContainer';
 interface SessionPageProps {
     deck: Deck;
     settings: SessionSettings;
+    indexArray:number[];
     terminateSession: () => void;
 }
 
@@ -21,23 +22,22 @@ const SessionPage = (props: SessionPageProps) => {
     let upperBound = props.settings.upperBound;
 
     
-    let indexArray = createIndexArray(testLen, lowerBound, upperBound, testFormat);
     const [counter,setCounter] = useState<number>(0);
     const [points,setPoints] = useState<number>(0);
     const [proceedToScore, setProceedToScore] = useState<boolean>(false);
-    const [currentCardIndex, setCurrentCardIndex] = useState<number>(indexArray[0]);
+    const [currentCardIndex, setCurrentCardIndex] = useState<number>(props.indexArray[0]);
 
     const goNext = () => {
         let nextCounter = modulus(counter + 1, testLen);
         console.log("Next Counter: ", nextCounter, "Test Length: ", testLen);
-        let nextIndex = indexArray[nextCounter];
+        let nextIndex = props.indexArray[nextCounter];
         setCounter(nextCounter);
         setCurrentCardIndex(nextIndex);
 
     }
     const goPrev = () => {
         let prevCounter = modulus(counter - 1, testLen);
-        let prevIndex = indexArray[prevCounter];
+        let prevIndex = props.indexArray[prevCounter];
         setCounter(prevCounter);
         setCurrentCardIndex(prevIndex);
     }
