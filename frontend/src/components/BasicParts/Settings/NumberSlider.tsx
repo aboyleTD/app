@@ -15,6 +15,9 @@ const NumberSlider = (props: Props) => {
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         props.onChange(parseNumber(event.target.value));
     };
+    const handleChangeTextArea = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        props.onChange(parseNumber(event.target.value));
+    }
 
     const boxClass =
         props.size === 'small' ? 'px-1.5 py-0.5 text-xs' : 'px-3 py-1 text-sm';
@@ -28,25 +31,26 @@ const NumberSlider = (props: Props) => {
             <div className="text-sm text-gray">{props.minValue}</div>
 
             <input
-                type="range"
-                min={props.minValue}
-                max={props.maxValue}
-                value={props.value}
-                step={
-                    props.isInteger
-                        ? 1
-                        : (props.maxValue - props.minValue) / 100
-                }
-                onChange={handleChange}
-                className={`${sliderClass} dark:bg-gray-700 h-2 cursor-pointer appearance-none rounded-lg bg-light-gray accent-blue`}
+            type="range"
+            min={props.minValue}
+            max={props.maxValue}
+            value={props.value}
+            step={
+                props.isInteger
+                ? 1
+                : (props.maxValue - props.minValue) / 100
+            }
+            onChange={handleChange}
+            className={`${sliderClass} dark:bg-gray-700 h-2 cursor-pointer appearance-none rounded-lg bg-light-gray accent-blue`}
             />
 
             <div className="text-sm text-gray">{props.maxValue}</div>
-
-            <div
-                className={`absolute left-1/2 ${translateClass} top-1/2 -translate-y-1/2 rounded-lg border border-blue text-blue ${boxClass} ${fontClass}`}>
-                {props.value.toFixed(props.isInteger ? 0 : 2)}
-            </div>
+            <input
+            type="text"
+            className={`absolute items-center w-14 hover:w-16 left-1/2 ${translateClass} top-1/2 -translate-y-1/2 rounded-lg border border-blue text-blue ${boxClass} ${fontClass} text-center`}
+            onChange={handleChange}
+            value={props.value.toFixed(props.isInteger ? 0 : 2)}
+            />
         </div>
     );
 };

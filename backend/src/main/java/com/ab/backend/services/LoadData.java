@@ -24,7 +24,7 @@ public class LoadData {
         ArrayList<Compendium> compendium = new ArrayList<Compendium>();
         for (File file : directory.listFiles()) {
             if (exclusionCriteria(file.getName())) {
-                System.out.println("Excluded: " + file.getName());
+                // System.out.println("Excluded: " + file.getName());
                 continue;
             }
             if (file.isDirectory()) {

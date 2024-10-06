@@ -4,12 +4,15 @@ import {QueryType} from '../../types/SettingTypes';
 import { modulus } from '../BasicParts/BasicFunctions';
 import CardDisplay from './CardDisplay';
 import CardButton from '../BasicParts/Buttons/CardButton';
+import CheckmarkButton from '../BasicParts/Buttons/CheckmarkButton';
 
 interface CardDisplayContainerProps {
     card: Card;
     queryType: QueryType;
+    isCorrect: boolean;
     goNextCard: () => void;
     goPrevCard: () => void;
+    changeCorrect: () => void;
     
 }
 
@@ -88,10 +91,13 @@ const CardDisplayContainer = (props: CardDisplayContainerProps) => {
         setSide(0);
         props.goPrevCard();
     }
-
+    console.log("CardDisplayContainer is selected: ", props.isCorrect);
     return (
         <div className='flex flex-col gap-y-10'>
-            <CardDisplay titledText={titledTextList[side]} goNextSide={goNextSide} goPrevSide={goPrevSide}/>
+            <div className='relative '>
+                <CardDisplay titledText={titledTextList[side]} goNextSide={goNextSide} goPrevSide={goPrevSide}/>
+                <CheckmarkButton correct={props.isCorrect} onClick={props.changeCorrect}/>
+            </div>
             <div className='flex flex-row justify-between '>
                 <CardButton text="Previous" onClick={goPrevCardWithSideReset}/>
                 <CardButton text="Next" onClick={goNextCardWithSideReset}/>

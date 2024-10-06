@@ -3,7 +3,7 @@ import axios from 'axios';
 export const BASE_URL = 'http://localhost:8080';
 
 
-export const axiosClient_reader = axios.create({
+export const axiosClientReader = axios.create({
     baseURL: BASE_URL,
     withCredentials: false,
     headers: {
@@ -12,9 +12,9 @@ export const axiosClient_reader = axios.create({
     },
 });
 
-export const axiosClient_writer = axios.create({
+export const axiosClientWriter = axios.create({
     baseURL: BASE_URL,
-    withCredentials: true,
+    withCredentials: false,
     headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

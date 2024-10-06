@@ -63,7 +63,7 @@ const CompendiumPage = (props:CompendiumPageProps) => {
     
     return (<>
         {
-            isDeck && <DeckPage thisDeck={curCompendium as Deck} returnToParent={returnToParent}/>
+            isDeck && <DeckPage thisDeck={curCompendium as Deck} returnToParent={returnToParent} moveToCompendium={moveToCompedium}/>
         }
         {!isDeck && <div className="flex flex-col justiy-center items-center">
             <div className="flex flex-row mt-5">

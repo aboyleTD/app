@@ -1,5 +1,6 @@
 import { Deck, Card } from "../../types/DataTypes";
 const offsetPerElement: number = 6;
+const cutOff: number = 60;
 
 interface CardStackProps {
     thisDeck: Deck;
@@ -8,6 +9,8 @@ interface CardStackProps {
 export function CardStack(props: CardStackProps) {
     let deck: Deck = props.thisDeck;
     let len = deck.cards.length;
+    let cards = deck.cards.slice(0,cutOff);
+    let topOffset = len > cutOff ? cutOff : len;
 
 
     return (
@@ -16,15 +19,16 @@ export function CardStack(props: CardStackProps) {
                 className='grid'
                 style={
                     {
-                        marginTop: `${offsetPerElement *len+ 30}px`,
+                        marginTop: `${offsetPerElement * topOffset + 25}px`,
                     }
                 }>
-                {deck.cards.map((card: Card, index: number) => {
+                {cards.map((card: Card, index: number) => {
                     let offset = (index + 1) * offsetPerElement;
+                    // console.log("visualize a card at offset: ", offset)
                     return (
                         <div
                             key={index}
-                            className="col-start-1 row-start-1 w-44 h-36 rounded-xl border-2 border-gray-700 bg-white cursor-pointer"
+                            className="col-start-1 row-start-1 w-44 h-32 rounded-xl border-2 border-gray-700 bg-white cursor-pointer"
                             style={{
                                 transform: `translate(${0}px, ${-offset}px)`,
                                 alignContent: `${index === 0 ? 'center' : 'flex-start'}`,

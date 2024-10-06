@@ -1,9 +1,9 @@
-import {axiosClient_reader} from '../apiClient';
-import { basicResponse } from '../../types/responseTypes';
+import {axiosClientReader} from '../apiClient';
+import { basicResponse } from '../../types/ResponseTypes';
 import { Compendium } from '../../types/DataTypes';
 
 export function getHello(): Promise<basicResponse | undefined> {
-    const promise = axiosClient_reader.get<basicResponse>('hello');
+    const promise = axiosClientReader.get<basicResponse>('hello');
     console.log("Trying to send request to /hello");
     return promise
         .then(res => {
@@ -17,7 +17,7 @@ export function getHello(): Promise<basicResponse | undefined> {
 }
 
 export function getCollections(): Promise<Compendium | undefined> {
-    const promise = axiosClient_reader.get<Compendium>('collections');
+    const promise = axiosClientReader.get<Compendium>('collections');
     console.log("Trying to send request to /collections");
     return promise
         .then(res => {

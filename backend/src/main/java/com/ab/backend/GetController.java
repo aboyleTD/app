@@ -18,7 +18,6 @@ public class GetController {
     public ResponseEntity<Compendium> index() {
         System.out.println("GET /collections commence");
         Compendium usersCollections = LoadData.loadData();
-        Compendium responseCompendium = new Compendium();
         ResponseEntity<Compendium> responseEntity = new ResponseEntity<Compendium>(usersCollections, HttpStatus.OK);
         System.out.println(responseEntity.toString());
         return responseEntity;

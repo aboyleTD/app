@@ -10,7 +10,7 @@ interface SessionPageProps {
     deck: Deck;
     settings: SessionSettings;
     indexArray:number[];
-    terminateSession: () => void;
+    terminateSession: (correctArray: boolean[], memorizeErrors:boolean) => void;
 }
 
 const SessionPage = (props: SessionPageProps) => {
@@ -20,10 +20,11 @@ const SessionPage = (props: SessionPageProps) => {
     let testLen = props.settings.testLen;
     let lowerBound = props.settings.lowerBound;
     let upperBound = props.settings.upperBound;
+    const initCorrectArray = Array<boolean>(testLen).fill(false);
 
     
     const [counter,setCounter] = useState<number>(0);
-    const [points,setPoints] = useState<number>(0);
+    const [correctArray, setCorrectArray] = useState<boolean[]>(initCorrectArray);
     const [proceedToScore, setProceedToScore] = useState<boolean>(false);
     const [currentCardIndex, setCurrentCardIndex] = useState<number>(props.indexArray[0]);
 
@@ -41,7 +42,24 @@ const SessionPage = (props: SessionPageProps) => {
         setCounter(prevCounter);
         setCurrentCardIndex(prevIndex);
     }
-    
+    const changeCorrectCurrent = () => {
+        let newCorrectArray = [...correctArray];
+        newCorrectArray[counter] = !newCorrectArray[counter];
+        setCorrectArray(newCorrectArray);
+    }
+    const countCorrect = () => {
+        let count = 0;
+        for (let i = 0; i < testLen; i++) {
+            if (correctArray[i]) {
+                count++;
+            }
+        }
+        return count;
+    }
+    const terminateAndReturnCorrectArray = () => {
+        props.terminateSession(correctArray,true);
+    }
+    console.log("Current Card Correct: ", correctArray[counter]);
     return (
         <>
             {!proceedToScore &&
@@ -49,20 +67,20 @@ const SessionPage = (props: SessionPageProps) => {
                 <div className='flex flex-col '>
                 <h1 className='font-bold text-2xl'>Currently Running: {deck.name}</h1>
                     <p>Current Item: {counter+1}/{testLen}</p>
-                    <p>Points: {points}/{testLen}</p>
+                    <p>Points: {countCorrect()}/{testLen}</p>
                 </div>
                 <div className='mt-16'>
-                    <CardDisplayContainer card={deck.cards[currentCardIndex]} queryType={queryType} goNextCard={goNext} goPrevCard={goPrev} />
+                    <CardDisplayContainer card={deck.cards[currentCardIndex]} queryType={queryType} isCorrect={correctArray[counter]} goNextCard={goNext} goPrevCard={goPrev} changeCorrect={changeCorrectCurrent} />
                 </div>
-                <Button order={1} absolute={true} onClick={props.terminateSession} >
+                    <Button order={1} absolute={true} onClick={terminateAndReturnCorrectArray} >
                     End Session
                 </Button>
             </div>}
             {proceedToScore &&
             <div>
                 <h1 className='font-bold text-2xl'>Session Complete!</h1>
-                <p>Points: {points}/{testLen}</p>
-                <Button order={1} pos={2} onClick={props.terminateSession} >
+                <p>Points: {countCorrect()}/{testLen}</p>
+                    <Button order={1} pos={2} onClick={terminateAndReturnCorrectArray} >
                     End Session
                 </Button>
             </div>}
