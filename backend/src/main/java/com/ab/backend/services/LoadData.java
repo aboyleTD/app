@@ -2,6 +2,8 @@ package com.ab.backend.services;
 
 import com.ab.backend.types.Compendium;
 import com.ab.backend.types.Deck;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,10 +20,42 @@ public class LoadData {
         return isBunpou || isExcluded;
         
     }
+    
+    private static String getFileExtension(File file) {
+        String name = file.getName();
+        int lastIndexOf = name.lastIndexOf(".")+1;
+        if (lastIndexOf == -1) {
+            return ""; // empty extension
+        }
+        return name.substring(lastIndexOf);
+    }
+    private static String getFileName(File file) {
+        String name = file.getName();
+        int lastIndexOf = name.lastIndexOf(".");
+        if (lastIndexOf == -1) {
+            return name; // empty extension
+        }
+        return name.substring(0,lastIndexOf);
+    }
+    private static HashSet<String> checkDuplicates(File[] files) {
+        HashSet<String> seenNames = new HashSet<String>();
+        HashSet<String> duplicates = new HashSet<String>();
+        for (File file : files) {
+            String name = getFileName(file);
+            if (seenNames.contains(name)) {
+                duplicates.add(name);
+            } else {
+                seenNames.add(name);
+            }
+        }
+        return duplicates;
+    }
     private static Compendium handleDir(File directory, int depth) {
         // System.out.println("Handling directory: " + directory.getName());
         ArrayList<Compendium> decks = new ArrayList<Compendium>();
         ArrayList<Compendium> compendium = new ArrayList<Compendium>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        HashSet<String> duplicates = checkDuplicates(directory.listFiles());
         for (File file : directory.listFiles()) {
             if (exclusionCriteria(file.getName())) {
                 // System.out.println("Excluded: " + file.getName());
@@ -30,10 +64,21 @@ public class LoadData {
             if (file.isDirectory()) {
                 compendium.add(handleDir(file, depth + 1));
             } else {
-                try{
-                    decks.add(((Compendium) new Deck(file)));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (getFileExtension(file).equals("json")) {
+                    try {
+                        decks.add(objectMapper.readValue(file, Compendium.class));
+                    } catch (Exception e) {
+                        System.out.println("Error reading file: " + file.getName());
+                        e.printStackTrace();
+                    }
+                } else {
+                    if (!duplicates.contains(getFileName(file))) {
+                        try {
+                            decks.add(((Compendium) new Deck(file)));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         }

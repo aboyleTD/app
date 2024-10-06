@@ -65,12 +65,13 @@ const DeckPage = (props: DeckSetPageProps) => {
                 }
             }
             deck.compendium.push(corrigendi);
+            let request: DeckCreationRequest = prepareDeck(deck);
+            console.log("Request to Create Compendium: ", request);
+            requestDeckCreation(request).then((response) => {
+                console.log("Response from Compendium Creation: ", response)
+            });
         }
-        let request: DeckCreationRequest = prepareDeck(deck);
-        console.log("Request to Create Compendium: ", request);
-        requestDeckCreation(request).then((response) => {
-            console.log("Response from Compendium Creation: ", response)
-        });
+        
 
 
     }

@@ -3,7 +3,7 @@ package com.ab.backend.types;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DeckCreationRequest {
-    @JsonProperty("Deck")
+    @JsonProperty("deck")
     Deck deck;
     @JsonProperty("pathToDeck")
     String pathToDeck;

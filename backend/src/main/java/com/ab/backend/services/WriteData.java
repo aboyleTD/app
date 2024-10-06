@@ -41,11 +41,14 @@ public class WriteData {
             parentDirectory.mkdirs();
         }
         ObjectMapper mapper = new ObjectMapper();
+        File deckFile = new File(path + "/" + deck.getName() + ".json");
         try {
-            mapper.writeValue(new File(path), deck);
+            mapper.writeValue(deckFile, deck);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Deck subDeck = (Deck)deck.getCompendium().get(0);
+        System.out.println("Card in subdeck: " + subDeck.getCards().get(0).getTerm());
             
         
     }

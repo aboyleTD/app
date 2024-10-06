@@ -1,19 +1,28 @@
 package com.ab.backend.types;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.Scanner;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@JsonTypeName("Deck")
 public class Deck extends Compendium {
     @JsonProperty("cards")
     ArrayList<Card> cards;
+
+    @JsonIgnore
     HashMap<String,Card> indexedCards;
     public ArrayList<Card> getCards(){
         return this.cards;
+    }
+    public void setCards(ArrayList<Card> cards){
+        this.cards = cards;
     }
     public Deck(File file) throws FileNotFoundException  {
         this.name = file.getName();
@@ -71,7 +80,32 @@ public class Deck extends Compendium {
             
             title = term == null ? reading : term;
             String[][] extendedReadings = {on, kun};
-            Card nc = new Card(term, reading, translations, extendedReadings, examples);
+            ArrayList<String> translations_as_list = new ArrayList<String>();
+            for (String translation : translations) {
+                translations_as_list.add(translation);
+            }
+            ArrayList<String> examples_as_list = new ArrayList<String>();
+            if (examples != null) {
+                for (String example : examples) {
+                    examples_as_list.add(example);
+                }
+            }
+            ArrayList<ArrayList<String>> extendedReadings_as_list = new ArrayList<ArrayList<String>>(2);
+            ArrayList<String> on_readings = new ArrayList<String>();
+            ArrayList<String> kun_readings = new ArrayList<String>();
+            if (on != null) {
+                for (String on_reading : on){
+                    on_readings.add(on_reading);
+                }
+            }
+            if (kun != null) {
+                for (String kun_reading : kun){
+                    kun_readings.add(kun_reading);
+                }
+            }
+            extendedReadings_as_list.add(on_readings);
+            extendedReadings_as_list.add(kun_readings);
+            Card nc = new Card(term, reading, translations_as_list, extendedReadings_as_list, examples_as_list);
             membersMap.put(title, nc);
             set.add(nc);
         }
@@ -82,11 +116,11 @@ public class Deck extends Compendium {
         // System.out.println("Successfully loaded deck: " + this.name);
         filesc.close();
     }
+
     public Deck(){
-        this.name = "";
+        super();
         this.cards = new ArrayList<Card>();
         this.indexedCards = new HashMap<String, Card>();
         this.type = CompendiumType.Deck;
-        this.compendium = new ArrayList<Compendium>();
     }
 }

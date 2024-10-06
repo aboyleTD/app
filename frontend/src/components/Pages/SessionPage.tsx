@@ -27,6 +27,7 @@ const SessionPage = (props: SessionPageProps) => {
     const [correctArray, setCorrectArray] = useState<boolean[]>(initCorrectArray);
     const [proceedToScore, setProceedToScore] = useState<boolean>(false);
     const [currentCardIndex, setCurrentCardIndex] = useState<number>(props.indexArray[0]);
+    const [saveMistakes, setSaveMistakes] = useState<boolean>(true);
 
     const goNext = () => {
         let nextCounter = modulus(counter + 1, testLen);
@@ -57,19 +58,26 @@ const SessionPage = (props: SessionPageProps) => {
         return count;
     }
     const terminateAndReturnCorrectArray = () => {
-        props.terminateSession(correctArray,true);
+        props.terminateSession(correctArray,saveMistakes);
     }
     console.log("Current Card Correct: ", correctArray[counter]);
+    let saveMistakesText = saveMistakes ? "Saving Mistakes" : "Save Mistakes?";
+    let saveButtonStyle = saveMistakes ? "bg-blue-500 hover:bg-blue-700 hover:border-blue-700 text-white border-blue-500" :"bg-white border-black hover:bg-blue-500 hover:border-blue-500 hover:text-white";
     return (
         <>
             {!proceedToScore &&
-            <div className='flex flex-col justify-center items-center'>
+            <div className='flex flex-col gap-10'>
                 <div className='flex flex-col '>
                 <h1 className='font-bold text-2xl'>Currently Running: {deck.name}</h1>
                     <p>Current Item: {counter+1}/{testLen}</p>
                     <p>Points: {countCorrect()}/{testLen}</p>
+                    <div className='items-center mt-1'>
+                        <button className={`border-2 rounded-lg w-36 h-10 ${saveButtonStyle}`}
+                            onClick={() => setSaveMistakes(!saveMistakes)}>{saveMistakesText}
+                        </button>
+                    </div>
                 </div>
-                <div className='mt-16'>
+                <div className=''>
                     <CardDisplayContainer card={deck.cards[currentCardIndex]} queryType={queryType} isCorrect={correctArray[counter]} goNextCard={goNext} goPrevCard={goPrev} changeCorrect={changeCorrectCurrent} />
                 </div>
                     <Button order={1} absolute={true} onClick={terminateAndReturnCorrectArray} >

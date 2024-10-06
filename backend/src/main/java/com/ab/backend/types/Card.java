@@ -2,19 +2,23 @@ package com.ab.backend.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.sql.Array;
+import java.util.ArrayList;
+
 public class Card {
     @JsonProperty("term")
     String term;
     @JsonProperty("reading")
     String reading;
     @JsonProperty("translations")
-    String[] translations;
+    ArrayList<String> translations;
     @JsonProperty("extendedReadings")
-    String[][] extendedReadings; // [0] = onyomi, [1] = kunyomi
+    ArrayList<ArrayList<String>> extendedReadings; // [0] = onyomi, [1] = kunyomi
     @JsonProperty("examples")
-    String[] examples;
+    ArrayList<String> examples;
 
-    public Card(String term, String reading, String[] translations, String[][] extendedReadings, String[] examples) {
+    public Card(String term, String reading, ArrayList<String> translations, 
+            ArrayList<ArrayList<String>> extendedReadings, ArrayList<String> examples) {
         this.term = term;
         this.reading = reading;
         this.translations = translations;
@@ -24,9 +28,10 @@ public class Card {
     public Card(){
         term = "";
         reading = "";
-        translations = new String[0];
-        extendedReadings = new String[0][0];
-        examples = new String[0];
+        translations = new ArrayList<String>();
+        extendedReadings = new ArrayList<ArrayList<String>>();
+        examples = new ArrayList<String>();
+        // System.out.println("Creating new card");
     }
     public String getTerm(){
         return this.term;
@@ -40,22 +45,22 @@ public class Card {
     public void setReading(String reading){
         this.reading = reading;
     }
-    public String[] getTranslations(){
+    public ArrayList<String> getTranslations(){
         return this.translations;
     }
-    public void setTranslations(String[] translations){
+    public void setTranslations(ArrayList<String> translations){
         this.translations = translations;
     }
-    public String[][] getExtendedReadings(){
+    public ArrayList<ArrayList<String>> getExtendedReadings(){
         return this.extendedReadings;
     }
-    public void setExtendedReadings(String[][] extendedReadings){
+    public void setExtendedReadings(ArrayList<ArrayList<String>> extendedReadings){
         this.extendedReadings = extendedReadings;
     }
-    public String[] getExamples(){
+    public ArrayList<String> getExamples(){
         return this.examples;
     }
-    public void setExamples(String[] examples){
+    public void setExamples(ArrayList<String> examples){
         this.examples = examples;
     }
 

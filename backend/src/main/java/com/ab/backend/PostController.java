@@ -33,7 +33,7 @@ public class PostController {
     @PostMapping(path = "/create/deck", produces = "application/json")
     public ResponseEntity<BasicResponse> createDeck(@RequestBody DeckCreationRequest request) {
         System.out.println("Post /create/deck");
-        System.out.println("Received deck: " + request.getDeck() + " at path: " + request.getPathToDeck());
+        System.out.println("Received deck: " + request.getDeck().getName() + " at path: " + request.getPathToDeck());
         WriteData.createDeck(request);
         BasicResponse response = new BasicResponse();
         response.setMessage("Created Compendium: " + request.getDeck().getName());
