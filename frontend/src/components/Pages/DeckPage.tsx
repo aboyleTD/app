@@ -56,7 +56,7 @@ const DeckPage = (props: DeckSetPageProps) => {
     const terminateSession= (correctArray:boolean[], memorizeErrors:boolean) => {
         setSessionRunning(false);
         
-        if (memorizeErrors && correctArray.includes(false) && deck.parent !== undefined && deck.parent.type === CompendiumType.CardSet){
+        if (memorizeErrors && correctArray.includes(false) && deck.parent !== undefined){
             let numErrorDecks = deck.compendium.length; 
             let corrigendi: Deck = { name: deck.name + `のC${numErrorDecks+1}`, type:CompendiumType.Deck,compendium:[], cards:[]}; 
             for (let i = 0; i < correctArray.length; i++){
@@ -65,11 +65,14 @@ const DeckPage = (props: DeckSetPageProps) => {
                 }
             }
             deck.compendium.push(corrigendi);
-            let request: DeckCreationRequest = prepareDeck(deck);
-            console.log("Request to Create Compendium: ", request);
-            requestDeckCreation(request).then((response) => {
-                console.log("Response from Compendium Creation: ", response)
-            });
+            if (deck.parent.type === CompendiumType.CardSet){
+                let request: DeckCreationRequest = prepareDeck(deck);
+                console.log("Request to Create Compendium: ", request);
+                requestDeckCreation(request).then((response) => {
+                    console.log("Response from Compendium Creation: ", response)
+                });
+            }
+            
         }
         
 
