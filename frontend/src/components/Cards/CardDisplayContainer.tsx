@@ -93,7 +93,7 @@ const CardDisplayContainer = (props: CardDisplayContainerProps) => {
     }
     console.log("CardDisplayContainer is selected: ", props.isCorrect);
     return (
-        <div className='flex flex-col gap-y-10'>
+        <div className='flex flex-col gap-y-10 w-72'>
             <div className='relative '>
                 <CardDisplay titledText={titledTextList[side]} goNextSide={goNextSide} goPrevSide={goPrevSide}/>
                 <CheckmarkButton correct={props.isCorrect} onClick={props.changeCorrect}/>

@@ -6,6 +6,7 @@ import DeckPage from './DeckPage';
 interface CompendiumPageProps {
     compendium: Compendium;
 }
+
 const CompendiumPage = (props:CompendiumPageProps) => {
     const [curCompendium, setCurCompendium] = useState<Compendium>(props.compendium);
     
@@ -63,11 +64,12 @@ const CompendiumPage = (props:CompendiumPageProps) => {
     
     return (<>
         {
-            isDeck && <DeckPage thisDeck={curCompendium as Deck} returnToParent={returnToParent} moveToCompendium={moveToCompedium}/>
+            isDeck && <DeckPage thisDeck={curCompendium as Deck} moveToCompendium={moveToCompedium}/>
         }
         {!isDeck && <div className="flex flex-col justiy-center items-center">
             <div className="flex flex-row mt-5">
-                {!isTop &&
+                
+                {!isTop && // The back button for decks is different because need to wrap up the session
                     <BackButton onClick={() => moveToCompedium(curCompendium, curCompendium.parent, false)} />
                 }
                 <p className='font-bold text-2xl'>{header}</p>

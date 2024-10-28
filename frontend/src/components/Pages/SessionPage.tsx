@@ -66,7 +66,7 @@ const SessionPage = (props: SessionPageProps) => {
     return (
         <>
             {!proceedToScore &&
-            <div className='flex flex-col gap-10'>
+            <div className='flex flex-col gap-10 items-center'>
                 <div className='flex flex-col '>
                 <h1 className='font-bold text-2xl'>Currently Running: {deck.name}</h1>
                     <p>Current Item: {counter+1}/{testLen}</p>

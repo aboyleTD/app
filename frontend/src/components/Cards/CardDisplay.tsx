@@ -32,7 +32,7 @@ const CardDisplay = (props: CardDisplayProps) => {
     return (
         <div 
             ref={element}
-            className='flex flex-col relative w-72 h-52 rounded-xl border-2 border-gray-700 cursor-pointer font-medium text-xl p-2 pl-4 pr-4 whitespace-pre-wrap ' 
+            className='flex flex-col relative w-auto h-52 rounded-xl border-2 border-gray-700 cursor-pointer font-medium text-xl p-2 pl-4 pr-4 whitespace-pre-wrap ' 
             onClick={handleClicked}>
             <p className="font-bold">{props.titledText[0]}</p>
 

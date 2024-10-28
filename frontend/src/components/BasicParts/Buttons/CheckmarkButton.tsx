@@ -14,7 +14,7 @@ const CheckmarkButton = (props: PropsWithChildren<Props>) => {
     return (
         <button
             onClick={props.onClick}
-            className={`absolute top-1 right-2 rounded-lg border-2  w-9 items-center justify-center
+            className={`absolute top-1 right-1 rounded-lg border-2  w-9 items-center justify-center
              transition duration-200 ${stylePart}`}> 
             {/* {props.correct ? <IoIosCheckmark size={30} /> : <RxCross2 size={30} />}  */}
             <IoIosCheckmark size={30} /> 

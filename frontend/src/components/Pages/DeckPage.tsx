@@ -13,7 +13,6 @@ import { prepareCompendium, prepareDeck } from '../../services/compendiumHandler
 import { requestCompendiumCreation, requestDeckCreation } from '../../router/resources/Writer';
 interface DeckSetPageProps {
     thisDeck: Deck;
-    returnToParent: () => void;
     moveToCompendium: (curCompendium:Compendium,nextCompendium:Compendium | undefined,isDown:boolean ) => void;
 }
 
@@ -23,10 +22,13 @@ const DeckPage = (props: DeckSetPageProps) => {
     const [indexArray, setIndexArray] = useState<number[]>([]);
     let deck = props.thisDeck;
     
-    const returnToCollectionBrowser = () => {
+    const endSessionGoUp = () => {
         console.log("Returning to Collection Browser");
         setSessionRunning(false);
-        props.returnToParent();
+        if (deck.parent !== undefined){
+            console.log("Back Button in deck: Parent is not undefined");
+        }
+        props.moveToCompendium(deck, deck.parent, false);
     }
     const handleChangeTestFormat = (newCategory: string) => {
         console.log("Changing Test Format to: ", newCategory);
@@ -65,13 +67,13 @@ const DeckPage = (props: DeckSetPageProps) => {
                 }
             }
             deck.compendium.push(corrigendi);
-            if (deck.parent.type === CompendiumType.CardSet){
-                let request: DeckCreationRequest = prepareDeck(deck);
-                console.log("Request to Create Compendium: ", request);
-                requestDeckCreation(request).then((response) => {
-                    console.log("Response from Compendium Creation: ", response)
-                });
-            }
+            // if (deck.parent.type === CompendiumType.CardSet){
+            let request: DeckCreationRequest = prepareDeck(deck);
+            console.log("Request to Create Compendium: ", request);
+            requestDeckCreation(request).then((response) => {
+                console.log("Response from Compendium Creation: ", response)
+            });
+            // }
             
         }
         
@@ -89,7 +91,7 @@ const DeckPage = (props: DeckSetPageProps) => {
 
     return (
         <>
-            <BackButton onClick={() => returnToCollectionBrowser()} />
+            <BackButton onClick={() => endSessionGoUp()} />
             {!sessionRunning && 
             <div className='flex flex-row gap-20 justify-center m-10'>
                     <div className='flex flex-col z-10 '>
